@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turney Supermarket - Dominica's First Drive-Thru Supermarket</title>
+    <!-- Use Tailwind CSS CDN for all styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Set the Inter font for a modern look -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fc;
+        }
+        /* Custom CSS for a sleek button */
+        .btn-primary {
+            background-color: #0d9488;
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            transition: transform 0.2s, background-color 0.2s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .btn-primary:hover {
+            background-color: #0f766e;
+            transform: translateY(-2px);
+        }
+        /* Custom CSS for smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+        /* Custom styles for the message box */
+        #message-box {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            display: none;
+            text-align: center;
+        }
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+        }
+
+        /* Shopping Cart Styles */
+        #cart-button {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background-color: #0d9488;
+            color: white;
+            width: 4rem;
+            height: 4rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            z-index: 900;
+            transition: transform 0.2s;
+        }
+        #cart-button:hover {
+            transform: scale(1.1);
+        }
+        #cart-count {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: #f43f5e;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: bold;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            transform: translate(50%, -50%);
+            min-width: 1.5rem;
+            text-align: center;
+        }
+        #cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            max-width: 24rem;
+            height: 100%;
+            background-color: white;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+            z-index: 950;
+            display: flex;
+            flex-direction: column;
+        }
+        #cart-sidebar.open {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Header & Navigation -->
+    <header class="bg-white sticky top-0 z-50 shadow-md">
+        <nav class="container mx-auto px-6 py-4 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#" class="text-2xl font-bold text-gray-900">
+                Turney<span class="text-teal-600">Supermarket</span>
+            </a>
+
+            <!-- Desktop Navigation -->
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#home" class="text-gray-600 hover:text-teal-600 transition duration-300">Home</a>
+                <a href="#about" class="text-gray-600 hover:text-teal-600 transition duration-300">About Us</a>
+                <a href="#products" class="text-gray-600 hover:text-teal-600 transition duration-300">Shop</a>
+                <a href="#services" class="text-gray-600 hover:text-teal-600 transition duration-300">Services</a>
+                <a href="#how-it-works" class="text-gray-600 hover:text-teal-600 transition duration-300">How It Works</a>
+                <a href="#contact" class="text-gray-600 hover:text-teal-600 transition duration-300">Contact</a>
+            </div>
+
+            <!-- Mobile Menu Button (Hamburger) -->
+            <button id="mobile-menu-button" class="md:hidden text-gray-600 hover:text-teal-600 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+        </nav>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg py-4">
+            <a href="#home" class="block px-6 py-2 text-gray-800 hover:bg-gray-100">Home</a>
+            <a href="#about" class="block px-6 py-2 text-gray-800 hover:bg-gray-100">About Us</a>
+            <a href="#products" class="block px-6 py-2 text-gray-800 hover:bg-gray-100">Shop</a>
+            <a href="#services" class="block px-6 py-2 text-gray-800 hover:bg-gray-100">Services</a>
+            <a href="#how-it-works" class="block px-6 py-2 text-gray-800 hover:bg-gray-100">How It Works</a>
+            <a href="#contact" class="block px-6 py-2 text-gray-800 hover:bg-gray-100">Contact</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="relative bg-gradient-to-br from-teal-500 to-teal-700 text-white py-20 md:py-32 overflow-hidden">
+            <!-- New banner image added here -->
+            <img src="https://placehold.co/1600x600/1e293b/f1f5f9?text=TURN+E+Y+S+U+P+E+R+M+A+R+K+E+T" alt="A busy drive-thru supermarket entrance" class="absolute inset-0 w-full h-full object-cover opacity-30">
+
+            <div class="container mx-auto px-6 text-center">
+                <div class="relative z-10">
+                    <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-4">
+                        The Future of Grocery Shopping is Here.
+                    </h1>
+                    <p class="text-lg md:text-xl max-w-2xl mx-auto mb-8 font-light">
+                        Dominica's first drive-through supermarket offers unparalleled convenience and quality.
+                    </p>
+                    <a href="#how-it-works" class="btn-primary inline-block text-white bg-teal-800 hover:bg-teal-900 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
+                        See How It Works
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Us Section -->
+        <section id="about" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-12">
+                    <div class="md:w-1/2">
+                        <!-- Replaced the external image with a placeholder that works reliably in this environment -->
+                        <img src="https://placehold.co/1470x980/E0E0E0/333333?text=A+Supermarket" alt="A modern supermarket exterior" class="w-full h-auto rounded-xl shadow-lg transform transition duration-500 hover:scale-105">
+                    </div>
+                    <div class="md:w-1/2 text-center md:text-left">
+                        <h2 class="text-3xl md:text-4xl font-bold mb-4">About Turney Supermarket</h2>
+                        <p class="text-gray-600 mb-4 leading-relaxed">
+                            Welcome to Turney Supermarket, Dominica's revolutionary new way to shop for groceries. We combine the ease of online ordering with the speed of a drive-through, allowing you to pick up your weekly shop without ever leaving your car.
+                        </p>
+                        <p class="text-gray-600 leading-relaxed">
+                            Our mission is to provide fresh, high-quality products and a seamless shopping experience for the modern, busy individual. We are committed to serving our community with speed, efficiency, and a friendly smile.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Products Section -->
+        <section id="products" class="py-16 md:py-24 bg-gray-100">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-12">Our Products</h2>
+                <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Products will be dynamically inserted here by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" class="py-16 md:py-24 bg-gray-100">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-12">Our Services</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Service 1: Drive-Thru -->
+                    <div class="bg-white p-8 rounded-xl shadow-lg transition duration-300 hover:shadow-xl hover:translate-y-[-5px]">
+                        <div class="flex items-center justify-center w-16 h-16 bg-teal-500 text-white rounded-full mx-auto mb-6">
+                            <!-- Drive-Thru SVG Icon -->
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 14l6-6m-6 6l6 6m6-6a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Effortless Drive-Thru</h3>
+                        <p class="text-gray-600">
+                            Place your order online and pick it up at our dedicated drive-through lane. No more parking, no more queues.
+                        </p>
+                    </div>
+                    <!-- Service 2: Online Ordering -->
+                    <div class="bg-white p-8 rounded-xl shadow-lg transition duration-300 hover:shadow-xl hover:translate-y-[-5px]">
+                        <div class="flex items-center justify-center w-16 h-16 bg-teal-500 text-white rounded-full mx-auto mb-6">
+                            <!-- Online Ordering SVG Icon -->
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2m-2 4l-4 4-4-4m8 4V5"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Order Ahead</h3>
+                        <p class="text-gray-600">
+                            Browse our wide selection of products from your phone or computer and submit your order at your convenience.
+                        </p>
+                    </div>
+                    <!-- Service 3: Fresh Produce -->
+                    <div class="bg-white p-8 rounded-xl shadow-lg transition duration-300 hover:shadow-xl hover:translate-y-[-5px]">
+                        <div class="flex items-center justify-center w-16 h-16 bg-teal-500 text-white rounded-full mx-auto mb-6">
+                            <!-- Fresh Produce SVG Icon -->
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c1.657 0 3 1.343 3 3s-1.343 3-3 3-3-1.343-3-3 1.343-3 3-3z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 14.898c-2.404-1.282-4.148-1.923-5.657-1.923s-3.253.641-5.657 1.923a9.96 9.96 0 01-1.464 2.115c.348-.737.818-1.45 1.405-2.091a13.916 13.916 0 012.757-2.396 11.233 11.233 0 014.288 0 13.916 13.916 0 012.757 2.396c.587.641 1.057 1.354 1.405 2.091a9.96 9.96 0 01-1.464-2.115z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Quality Guarantee</h3>
+                        <p class="text-gray-600">
+                            We meticulously source the freshest local produce and highest-quality goods to ensure your satisfaction with every order.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section id="how-it-works" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-12">How It Works</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                    <!-- Step 1 -->
+                    <div class="flex flex-col items-center">
+                        <div class="w-20 h-20 flex items-center justify-center text-3xl font-bold text-teal-600 border-4 border-teal-600 rounded-full mb-4 transition-transform duration-300 hover:scale-110">
+                            1
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Place Your Order</h3>
+                        <p class="text-gray-600 max-w-sm">
+                            Visit our website or app to fill your cart with everything you need.
+                        </p>
+                    </div>
+                    <!-- Step 2 -->
+                    <div class="flex flex-col items-center">
+                        <div class="w-20 h-20 flex items-center justify-center text-3xl font-bold text-teal-600 border-4 border-teal-600 rounded-full mb-4 transition-transform duration-300 hover:scale-110">
+                            2
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Drive to Our Store</h3>
+                        <p class="text-gray-600 max-w-sm">
+                            We'll let you know when your order is ready. Drive to our location and pull into the designated lane.
+                        </p>
+                    </div>
+                    <!-- Step 3 -->
+                    <div class="flex flex-col items-center">
+                        <div class="w-20 h-20 flex items-center justify-center text-3xl font-bold text-teal-600 border-4 border-teal-600 rounded-full mb-4 transition-transform duration-300 hover:scale-110">
+                            3
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Pick Up & Go</h3>
+                        <p class="text-gray-600 max-w-sm">
+                            A member of our team will bring your pre-packed order directly to your car. You're on your way in minutes!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Call to Action Section -->
+        <section class="py-16 md:py-20 bg-teal-600 text-white">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">
+                    Ready to Shop the Smart Way?
+                </h2>
+                <p class="text-lg mb-8 max-w-2xl mx-auto">
+                    Say goodbye to long lines and wasted time. Experience the convenience of Turney Supermarket.
+                </p>
+                <a href="#products" class="btn-primary inline-block text-teal-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2">
+                    Start Shopping
+                </a>
+            </div>
+        </section>
+
+        <!-- Checkout Section -->
+        <section id="contact" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-12">
+                    <!-- Left column for checkout form -->
+                    <div class="md:w-1/2 w-full">
+                        <h2 class="text-3xl md:text-4xl font-bold mb-6 text-center md:text-left">Place Your Order</h2>
+                        <p class="text-gray-600 mb-6 text-center md:text-left">
+                            Fill out the form below to complete your drive-thru order.
+                        </p>
+                        <form id="checkout-form" class="space-y-6">
+                            <div>
+                                <label for="customer-name" class="block text-gray-700 font-medium mb-1">Name</label>
+                                <input type="text" id="customer-name" name="customer-name" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500" placeholder="Your Name" required>
+                            </div>
+                            <div>
+                                <label for="customer-email" class="block text-gray-700 font-medium mb-1">Email</label>
+                                <input type="email" id="customer-email" name="customer-email" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500" placeholder="your@email.com" required>
+                            </div>
+                            <div>
+                                <label for="customer-car" class="block text-gray-700 font-medium mb-1">Car Make and Model</label>
+                                <input type="text" id="customer-car" name="customer-car" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500" placeholder="e.g., Toyota Corolla" required>
+                            </div>
+                            <button type="submit" class="w-full btn-primary">
+                                Complete Order
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Right column for contact info and map -->
+                    <div class="md:w-1/2 w-full mt-12 md:mt-0">
+                        <h2 class="text-3xl md:text-4xl font-bold mb-6 text-center md:text-left">Our Location</h2>
+                        <div class="space-y-4 text-gray-700 mb-8 text-center md:text-left">
+                            <p class="flex items-center justify-center md:justify-start">
+                                <!-- Location SVG Icon -->
+                                <svg class="w-6 h-6 mr-2 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg>
+                                <span>123 Supermarket Blvd, Roseau, Dominica</span>
+                            </p>
+                            <p class="flex items-center justify-center md:justify-start">
+                                <!-- Phone SVG Icon -->
+                                <svg class="w-6 h-6 mr-2 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.948V19a2 2 0 01-2 2h-1C9.72 21 3 14.28 3 6V5z"></path>
+                                </svg>
+                                <span>(767) 123-4567</span>
+                            </p>
+                            <p class="flex items-center justify-center md:justify-start">
+                                <!-- Email SVG Icon -->
+                                <svg class="w-6 h-6 mr-2 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                </svg>
+                                <span>info@turneysupermarket.com</span>
+                            </p>
+                        </div>
+                        <!-- Embedded Google Map of Dominica -->
+                        <div class="rounded-xl overflow-hidden shadow-lg h-96 w-full">
+                            <iframe
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15444.60635390704!2d-61.38575971295286!3d15.309068019058765!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c148ca592d33431%3A0xc3f8e58f0e0c0d16!2sRoseau%2C%20Dominica!5e0!3m2!1sen!2sdo!4v1678252264626!5m2!1sen!2sdo"
+                                width="100%"
+                                height="100%"
+                                style="border:0;"
+                                allowfullscreen=""
+                                loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade">
+                            </iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Floating Shopping Cart Button -->
+    <div id="cart-button">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5H20l-4 8H7z"></path>
+        </svg>
+        <span id="cart-count" class="hidden">0</span>
+    </div>
+
+    <!-- Shopping Cart Sidebar -->
+    <div id="cart-sidebar" class="p-6">
+        <div class="flex justify-between items-center pb-4 border-b border-gray-200">
+            <h3 class="text-2xl font-bold">Your Cart</h3>
+            <button id="close-cart-button" class="text-gray-500 hover:text-gray-800">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+        <div id="cart-items" class="flex-grow overflow-y-auto my-4">
+            <!-- Cart items will be inserted here -->
+            <p id="empty-cart-message" class="text-center text-gray-500 mt-8">Your cart is empty.</p>
+        </div>
+        <div class="pt-4 border-t border-gray-200">
+            <div class="flex justify-between items-center font-bold text-xl mb-4">
+                <span>Total:</span>
+                <span id="cart-total">$0.00</span>
+            </div>
+            <a href="#contact" id="checkout-link" class="w-full btn-primary text-center block">
+                Proceed to Checkout
+            </a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-6 text-center md:flex md:justify-between md:items-center">
+            <p class="mb-4 md:mb-0">
+                &copy; 2024 Turney Supermarket. All rights reserved.
+            </p>
+            <div class="flex items-center justify-center space-x-4">
+                <!-- Social Media Icons (placeholders) -->
+                <a href="#" class="text-white hover:text-gray-400 transition duration-300">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M22.01 0H1.99A1.99 1.99 0 000 1.99v20.02A1.99 1.99 0 001.99 24h20.02A1.99 1.99 0 0024 22.01V1.99A1.99 1.99 0 0022.01 0zM7 19H4v-8h3zm.01-9.5A2.5 2.5 0 117 7a2.5 2.5 0 010 3zm11.99 9.5h-3.02v-5.5c0-1.3-.4-2.2-1.6-2.2a2.3 2.3 0 00-2.3 2.3v5.4h-3.02v-8h3.02v1.3c.4-.7 1.4-1.3 2.8-1.3 2.1 0 3.7 1.4 3.7 4.5v3.5z"></path>
+                    </svg>
+                </a>
+                <a href="#" class="text-white hover:text-gray-400 transition duration-300">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M24 4.557a9.83 9.83 0 01-2.828.775 4.932 4.932 0 002.165-2.724 9.864 9.864 0 01-3.127 1.195 4.925 4.925 0 00-8.397 4.5c-4.092-.205-7.72-2.176-10.158-5.124a4.925 4.925 0 00-6.726 1.642 4.925 4.925 0 00-.776 2.476v.063a4.925 4.925 0 004.14 4.82c-.894.24-1.83.29-2.656-.07a4.925 4.925 0 00-.916 4.954 13.91 13.91 0 009.624 3.323c-2.43 1.954-5.462 2.955-8.775 2.955-.572 0-1.144-.034-1.71-.1-.776.248-1.58.375-2.42.375-1.65 0-3.21-.358-4.664-.99a13.917 13.917 0 0013.917 14.821c16.69 0 25.86-13.844 25.86-25.86 0-.395-.008-.79-.025-1.182A18.665 18.665 0 0024 4.557z"></path>
+                    </svg>
+                </a>
+                <a href="#" class="text-white hover:text-gray-400 transition duration-300">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12 2.052c-5.522 0-10 4.478-10 10s4.478 10 10 10 10-4.478 10-10-4.478-10-10-10zm0 18.25c-4.54 0-8.25-3.71-8.25-8.25S7.46 3.8 12 3.8s8.25 3.71 8.25 8.25-3.71 8.25-8.25 8.25zm4.834-12.75c-.328 0-.64.128-.87.358L10.5 12.358l-1.464-1.464c-.23-.23-.542-.358-.87-.358a1.2 1.2 0 00-.87.358L5.5 12.558a.5.5 0 000 .708l1.414 1.414.07-.07c.23.23.542.358.87.358a1.2 1.2 0 00.87-.358l2.67-2.67 1.414 1.414.07-.07c.23.23.542.358.87.358a1.2 1.2 0 00.87-.358l2.67-2.67 1.414 1.414.07-.07c.23.23.542.358.87.358a1.2 1.2 0 00.87-.358l.707-.707a.5.5 0 000-.708l-1.414-1.414a.5.5 0 00-.707 0z"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Message Box UI -->
+    <div id="overlay"></div>
+    <div id="message-box" class="rounded-xl">
+        <h3 id="message-title" class="text-2xl font-bold mb-4"></h3>
+        <p id="message-text" class="text-gray-600 mb-6"></p>
+        <button id="close-message-box" class="btn-primary">OK</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- UI Elements ---
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const checkoutForm = document.getElementById('checkout-form');
+            const messageBox = document.getElementById('message-box');
+            const overlay = document.getElementById('overlay');
+            const closeMessageBoxButton = document.getElementById('close-message-box');
+            const messageTitle = document.getElementById('message-title');
+            const messageText = document.getElementById('message-text');
+            const cartButton = document.getElementById('cart-button');
+            const cartSidebar = document.getElementById('cart-sidebar');
+            const closeCartButton = document.getElementById('close-cart-button');
+            const cartCountSpan = document.getElementById('cart-count');
+            const productListDiv = document.getElementById('product-list');
+            const cartItemsDiv = document.getElementById('cart-items');
+            const emptyCartMessage = document.getElementById('empty-cart-message');
+            const cartTotalSpan = document.getElementById('cart-total');
+
+            // --- Product Data ---
+            // This is the new, comprehensive list of all grocery items.
+            const products = [
+                { id: 1, name: 'Apples', price: 1.50, image: 'https://placehold.co/400x400/81C784/FFFFFF?text=Apples' },
+                { id: 2, name: 'Bananas', price: 0.75, image: 'https://placehold.co/400x400/FFF176/000000?text=Bananas' },
+                { id: 3, name: 'Oranges', price: 0.90, image: 'https://placehold.co/400x400/FFB74D/000000?text=Oranges' },
+                { id: 4, name: 'Lemons', price: 0.50, image: 'https://placehold.co/400x400/FFF59D/000000?text=Lemons' },
+                { id: 5, name: 'Limes', price: 0.60, image: 'https://placehold.co/400x400/AED581/000000?text=Limes' },
+                { id: 6, name: 'Grapes', price: 2.80, image: 'https://placehold.co/400x400/6A1B9A/FFFFFF?text=Grapes' },
+                { id: 7, name: 'Strawberries', price: 3.50, image: 'https://placehold.co/400x400/EF5350/FFFFFF?text=Strawberries' },
+                { id: 8, name: 'Blueberries', price: 3.99, image: 'https://placehold.co/400x400/7986CB/FFFFFF?text=Blueberries' },
+                { id: 9, name: 'Raspberries', price: 3.75, image: 'https://placehold.co/400x400/E57373/FFFFFF?text=Raspberries' },
+                { id: 10, name: 'Blackberries', price: 4.10, image: 'https://placehold.co/400x400/424242/FFFFFF?text=Blackberries' },
+                { id: 11, name: 'Pineapple', price: 4.50, image: 'https://placehold.co/400x400/FFEE58/000000?text=Pineapple' },
+                { id: 12, name: 'Mangoes', price: 2.50, image: 'https://placehold.co/400x400/FFB74D/FFFFFF?text=Mangoes' },
+                { id: 13, name: 'Papaya', price: 2.75, image: 'https://placehold.co/400x400/FF8A65/FFFFFF?text=Papaya' },
+                { id: 14, name: 'Watermelon', price: 5.00, image: 'https://placehold.co/400x400/66BB6A/FFFFFF?text=Watermelon' },
+                { id: 15, name: 'Cantaloupe', price: 3.80, image: 'https://placehold.co/400x400/FFAB40/FFFFFF?text=Cantaloupe' },
+                { id: 16, name: 'Honeydew', price: 4.20, image: 'https://placehold.co/400x400/CDDC39/FFFFFF?text=Honeydew' },
+                { id: 17, name: 'Kiwi', price: 0.85, image: 'https://placehold.co/400x400/9CCC65/FFFFFF?text=Kiwi' },
+                { id: 18, name: 'Dragon fruit', price: 5.99, image: 'https://placehold.co/400x400/FF8A65/FFFFFF?text=Dragon+fruit' },
+                { id: 19, name: 'Starfruit', price: 3.10, image: 'https://placehold.co/400x400/FFEB3B/FFFFFF?text=Starfruit' },
+                { id: 20, name: 'Pomegranate', price: 2.99, image: 'https://placehold.co/400x400/E53935/FFFFFF?text=Pomegranate' },
+                { id: 21, name: 'Cherries', price: 6.50, image: 'https://placehold.co/400x400/D32F2F/FFFFFF?text=Cherries' },
+                { id: 22, name: 'Plums', price: 2.30, image: 'https://placehold.co/400x400/8E24AA/FFFFFF?text=Plums' },
+                { id: 23, name: 'Peaches', price: 2.10, image: 'https://placehold.co/400x400/FFCC80/FFFFFF?text=Peaches' },
+                { id: 24, name: 'Nectarines', price: 2.25, image: 'https://placehold.co/400x400/FFAB91/FFFFFF?text=Nectarines' },
+                { id: 25, name: 'Apricots', price: 2.40, image: 'https://placehold.co/400x400/FFCC80/FFFFFF?text=Apricots' },
+                { id: 26, name: 'Figs', price: 4.99, image: 'https://placehold.co/400x400/9C27B0/FFFFFF?text=Figs' },
+                { id: 27, name: 'Dates', price: 5.50, image: 'https://placehold.co/400x400/6D4C41/FFFFFF?text=Dates' },
+                { id: 28, name: 'Coconut', price: 3.00, image: 'https://placehold.co/400x400/A1887F/FFFFFF?text=Coconut' },
+                { id: 29, name: 'Passionfruit', price: 1.75, image: 'https://placehold.co/400x400/FF8A65/FFFFFF?text=Passionfruit' },
+                { id: 30, name: 'Guava', price: 2.00, image: 'https://placehold.co/400x400/D4E157/000000?text=Guava' },
+                { id: 31, name: 'Carrots', price: 1.20, image: 'https://placehold.co/400x400/FFA500/FFFFFF?text=Carrots' },
+                { id: 32, name: 'Potatoes', price: 2.50, image: 'https://placehold.co/400x400/D2B48C/FFFFFF?text=Potatoes' },
+                { id: 33, name: 'Sweet potatoes', price: 1.80, image: 'https://placehold.co/400x400/FF8C00/FFFFFF?text=Sweet+potatoes' },
+                { id: 34, name: 'Yams', price: 2.10, image: 'https://placehold.co/400x400/A0522D/FFFFFF?text=Yams' },
+                { id: 35, name: 'Onions', price: 1.00, image: 'https://placehold.co/400x400/C5E1A5/000000?text=Onions' },
+                { id: 36, name: 'Garlic', price: 0.50, image: 'https://placehold.co/400x400/C5E1A5/000000?text=Garlic' },
+                { id: 37, name: 'Shallots', price: 1.25, image: 'https://placehold.co/400x400/BDBDBD/000000?text=Shallots' },
+                { id: 38, name: 'Ginger', price: 1.99, image: 'https://placehold.co/400x400/D2B48C/000000?text=Ginger' },
+                { id: 39, name: 'Beets', price: 1.45, image: 'https://placehold.co/400x400/E57373/FFFFFF?text=Beets' },
+                { id: 40, name: 'Radishes', price: 1.60, image: 'https://placehold.co/400x400/E57373/FFFFFF?text=Radishes' },
+                { id: 41, name: 'Turnips', price: 1.30, image: 'https://placehold.co/400x400/D2B48C/000000?text=Turnips' },
+                { id: 42, name: 'Rutabaga', price: 1.55, image: 'https://placehold.co/400x400/A1887F/FFFFFF?text=Rutabaga' },
+                { id: 43, name: 'Celery', price: 1.70, image: 'https://placehold.co/400x400/81C784/FFFFFF?text=Celery' },
+                { id: 44, name: 'Lettuce', price: 2.00, image: 'https://placehold.co/400x400/81C784/FFFFFF?text=Lettuce' },
+                { id: 45, name: 'Romaine', price: 2.20, image: 'https://placehold.co/400x400/81C784/FFFFFF?text=Romaine' },
+                { id: 46, name: 'Kale', price: 2.50, image: 'https://placehold.co/400x400/4CAF50/FFFFFF?text=Kale' },
+                { id: 47, name: 'Spinach', price: 2.99, image: 'https://placehold.co/400x400/4CAF50/FFFFFF?text=Spinach' },
+                { id: 48, name: 'Swiss chard', price: 2.75, image: 'https://placehold.co/400x400/4CAF50/FFFFFF?text=Swiss+chard' },
+                { id: 49, name: 'Collard greens', price: 2.60, image: 'https://placehold.co/400x400/4CAF50/FFFFFF?text=Collard+greens' },
+                { id: 50, name: 'Mustard greens', price: 2.45, image: 'https://placehold.co/400x400/8BC34A/FFFFFF?text=Mustard+greens' },
+                { id: 51, name: 'Broccoli', price: 1.80, image: 'https://placehold.co/400x400/4CAF50/FFFFFF?text=Broccoli' },
+                { id: 52, name: 'Cauliflower', price: 2.10, image: 'https://placehold.co/400x400/EEEEEE/000000?text=Cauliflower' },
+                { id: 53, name: 'Brussels sprouts', price: 2.70, image: 'https://placehold.co/400x400/66BB6A/FFFFFF?text=Brussels+sprouts' },
+                { id: 54, name: 'Cabbage', price: 1.25, image: 'https://placehold.co/400x400/8BC34A/FFFFFF?text=Cabbage' },
+                { id: 55, name: 'Asparagus', price: 3.50, image: 'https://placehold.co/400x400/689F38/FFFFFF?text=Asparagus' },
+                { id: 56, name: 'Green beans', price: 2.00, image: 'https://placehold.co/400x400/8BC34A/FFFFFF?text=Green+beans' },
+                { id: 57, name: 'Snow peas', price: 2.80, image: 'https://placehold.co/400x400/8BC34A/FFFFFF?text=Snow+peas' },
+                { id: 58, name: 'Sugar snap peas', price: 2.90, image: 'https://placehold.co/400x400/8BC34A/FFFFFF?text=Sugar+snap+peas' },
+                { id: 59, name: 'Zucchini', price: 1.99, image: 'https://placehold.co/400x400/81C784/FFFFFF?text=Zucchini' },
+                { id: 60, name: 'Yellow squash', price: 1.70, image: 'https://placehold.co/400x400/FFEB3B/000000?text=Yellow+squash' },
+                { id: 61, name: 'Eggplant', price: 2.30, image: 'https://placehold.co/400x400/6A1B9A/FFFFFF?text=Eggplant' },
+                { id: 62, name: 'Bell peppers (red)', price: 1.80, image: 'https://placehold.co/400x400/EF5350/FFFFFF?text=Red+Bell+Pepper' },
+                { id: 63, name: 'Bell peppers (green)', price: 1.70, image: 'https://placehold.co/400x400/66BB6A/FFFFFF?text=Green+Bell+Pepper' },
+                { id: 64, name: 'Bell peppers (yellow)', price: 1.90, image: 'https://placehold.co/400x400/FFEB3B/000000?text=Yellow+Bell+Pepper' },
+                { id: 65, name: 'Bell peppers (orange)', price: 1.95, image: 'https://placehold.co/400x400/FF8A65/FFFFFF?text=Orange+Bell+Pepper' },
+                { id: 66, name: 'Jalapeños', price: 0.99, image: 'https://placehold.co/400x400/689F38/FFFFFF?text=Jalapeños' },
+                { id: 67, name: 'Serrano peppers', price: 1.10, image: 'https://placehold.co/400x400/689F38/FFFFFF?text=Serrano+peppers' },
+                { id: 68, name: 'Habanero peppers', price: 1.20, image: 'https://placehold.co/400x400/FF8F00/FFFFFF?text=Habanero+peppers' },
+                { id: 69, name: 'Chili peppers', price: 0.85, image: 'https://placehold.co/400x400/E53935/FFFFFF?text=Chili+peppers' },
+                { id: 70, name: 'Hot banana peppers', price: 1.15, image: 'https://placehold.co/400x400/FFF176/000000?text=Hot+banana+peppers' },
+                { id: 71, name: 'Tomatoes (roma)', price: 1.50, image: 'https://placehold.co/400x400/E53935/FFFFFF?text=Roma+Tomatoes' },
+                { id: 72, name: 'Tomatoes (beefsteak)', price: 2.00, image: 'https://placehold.co/400x400/E53935/FFFFFF?text=Beefsteak+Tomatoes' },
+                { id: 73, name: 'Cherry tomatoes', price: 2.50, image: 'https://placehold.co/400x400/E53935/FFFFFF?text=Cherry+Tomatoes' },
+                { id: 74, name: 'Grape tomatoes', price: 2.40, image: 'https://placehold.co/400x400/E53935/FFFFFF?text=Grape+Tomatoes' },
+                { id: 75, name: 'Avocados', price: 1.99, image: 'https://placehold.co/400x400/9CCC65/FFFFFF?text=Avocados' },
+                { id: 76, name: 'Cucumbers', price: 1.25, image: 'https://placehold.co/400x400/81C784/FFFFFF?text=Cucumbers' },
+                { id: 77, name: 'Okra', price: 2.15, image: 'https://placehold.co/400x400/4CAF50/FFFFFF?text=Okra' },
+                { id: 78, name: 'Artichokes', price: 3.50, image: 'https://placehold.co/400x400/5C6BC0/FFFFFF?text=Artichokes' },
+                { id: 79, name: 'Leeks', price: 1.80, image: 'https://placehold.co/400x400/BDBDBD/000000?text=Leeks' },
+                { id: 80, name: 'Scallions', price: 0.99, image: 'https://placehold.co/400x400/81C784/FFFFFF?text=Scallions' },
+                { id: 81, name: 'Chicken breasts', price: 7.99, image: 'https://placehold.co/400x400/F48FB1/FFFFFF?text=Chicken+breasts' },
+                { id: 82, name: 'Chicken thighs', price: 5.50, image: 'https://placehold.co/400x400/F48FB1/FFFFFF?text=Chicken+thighs' },
+                { id: 83, name: 'Chicken drumsticks', price: 4.99, image: 'https://placehold.co/400x400/F48FB1/FFFFFF?text=Chicken+drumsticks' },
+                { id: 84, name: 'Chicken wings', price: 6.20, image: 'https://placehold.co/400x400/F48FB1/FFFFFF?text=Chicken+wings' },
+                { id: 85, name: 'Whole chicken', price: 8.50, image: 'https://placehold.co/400x400/F48FB1/FFFFFF?text=Whole+chicken' },
+                { id: 86, name: 'Ground chicken', price: 5.80, image: 'https://placehold.co/400x400/F48FB1/FFFFFF?text=Ground+chicken' },
+                { id: 87, name: 'Turkey breast', price: 9.50, image: 'https://placehold.co/400x400/BDBDBD/000000?text=Turkey+breast' },
+                { id: 88, name: 'Ground turkey', price: 6.50, image: 'https://placehold.co/400x400/BDBDBD/000000?text=Ground+turkey' },
+                { id: 89, name: 'Turkey bacon', price: 3.99, image: 'https://placehold.co/400x400/D2B48C/FFFFFF?text=Turkey+bacon' },
+                { id: 90, name: 'Duck breast', price: 14.99, image: 'https://placehold.co/400x400/8D6E63/FFFFFF?text=Duck+breast' },
+                { id: 91, name: 'Duck legs', price: 12.50, image: 'https://placehold.co/400x400/8D6E63/FFFFFF?text=Duck+legs' },
+                { id: 92, name: 'Goose', price: 18.00, image: 'https://placehold.co/400x400/8D6E63/FFFFFF?text=Goose' },
+                { id: 93, name: 'Quail', price: 7.50, image: 'https://placehold.co/400x400/A1887F/FFFFFF?text=Quail' },
+                { id: 94, name: 'Cornish hens', price: 8.99, image: 'https://placehold.co/400x400/A1887F/FFFFFF?text=Cornish+hens' },
+                { id: 95, name: 'Pork chops', price: 7.20, image: 'https://placehold.co/400x400/FFCDD2/000000?text=Pork+chops' },
+                { id: 96, name: 'Pork loin', price: 6.99, image: 'https://placehold.co/400x400/FFCDD2/000000?text=Pork+loin' },
+                { id: 97, name: 'Pork shoulder', price: 5.99, image: 'https://placehold.co/400x400/FFCDD2/000000?text=Pork+shoulder' },
+                { id: 98, name: 'Pork ribs', price: 8.75, image: 'https://placehold.co/400x400/FFCDD2/000000?text=Pork+ribs' },
+                { id: 99, name: 'Pork belly', price: 9.50, image: 'https://placehold.co/400x400/FFCDD2/000000?text=Pork+belly' },
+                { id: 100, name: 'Ground pork', price: 4.50, image: 'https://placehold.co/400x400/FFCDD2/000000?text=Ground+pork' },
+                { id: 101, name: 'Beef sirloin', price: 10.99, image: 'https://placehold.co/400x400/E57373/FFFFFF?text=Beef+sirloin' },
+                { id: 102, name: 'Beef ribeye', price: 15.50, image: 'https://placehold.co/400x400/E57373/FFFFFF?text=Beef+ribeye' },
+                { id: 103, name: 'Beef tenderloin', price: 19.99, image: 'https://placehold.co/400x400/E57373/FFFFFF?text=Beef+tenderloin' },
+                { id: 104, name: 'Beef brisket', price: 11.20, image: 'https://placehold.co/400x400/E57373/FFFFFF?text=Beef+brisket' },
+                { id: 105, name: 'Ground beef (lean)', price: 7.50, image: 'https://placehold.co/400x400/B71C1C/FFFFFF?text=Lean+Ground+Beef' },
+                { id: 106, name: 'Ground beef (regular)', price: 6.99, image: 'https://placehold.co/400x400/B71C1C/FFFFFF?text=Ground+Beef' },
+                { id: 107, name: 'Beef short ribs', price: 13.50, image: 'https://placehold.co/400x400/B71C1C/FFFFFF?text=Beef+short+ribs' },
+                { id: 108, name: 'Beef stew meat', price: 8.99, image: 'https://placehold.co/400x400/B71C1C/FFFFFF?text=Beef+stew+meat' },
+                { id: 109, name: 'Beef chuck roast', price: 9.75, image: 'https://placehold.co/400x400/B71C1C/FFFFFF?text=Beef+chuck+roast' },
+                { id: 110, name: 'Beef liver', price: 4.50, image: 'https://placehold.co/400x400/795548/FFFFFF?text=Beef+liver' },
+                { id: 111, name: 'Veal cutlets', price: 16.00, image: 'https://placehold.co/400x400/BDBDBD/FFFFFF?text=Veal+cutlets' },
+                { id: 112, name: 'Veal chops', price: 18.50, image: 'https://placehold.co/400x400/BDBDBD/FFFFFF?text=Veal+chops' },
+                { id: 113, name: 'Venison steaks', price: 21.99, image: 'https://placehold.co/400x400/6D4C41/FFFFFF?text=Venison+steaks' },
+                { id: 114, name: 'Venison ground', price: 14.50, image: 'https://placehold.co/400x400/6D4C41/FFFFFF?text=Venison+ground' },
+                { id: 115, name: 'Lamb chops', price: 17.99, image: 'https://placehold.co/400x400/9C27B0/FFFFFF?text=Lamb+chops' },
+                { id: 116, name: 'Lamb shank', price: 15.50, image: 'https://placehold.co/400x400/9C27B0/FFFFFF?text=Lamb+shank' },
+                { id: 117, name: 'Ground lamb', price: 11.00, image: 'https://placehold.co/400x400/9C27B0/FFFFFF?text=Ground+lamb' },
+                { id: 118, name: 'Lamb ribs', price: 14.00, image: 'https://placehold.co/400x400/9C27B0/FFFFFF?text=Lamb+ribs' },
+                { id: 119, name: 'Goat meat', price: 12.50, image: 'https://placehold.co/400x400/795548/FFFFFF?text=Goat+meat' },
+                { id: 120, name: 'Oxtail', price: 16.99, image: 'https://placehold.co/400x400/A1887F/FFFFFF?text=Oxtail' },
+                { id: 121, name: 'Salmon fillets', price: 12.99, image: 'https://placehold.co/400x400/FF8A65/FFFFFF?text=Salmon+fillets' },
+                { id: 122, name: 'Salmon steak', price: 13.50, image: 'https://placehold.co/400x400/FF8A65/FFFFFF?text=Salmon+steak' },
+                { id: 123, name: 'Trout', price: 8.99, image: 'https://placehold.co/400x400/FFAB91/FFFFFF?text=Trout' },
+                { id: 124, name: 'Tilapia', price: 7.50, image: 'https://placehold.co/400x400/BDBDBD/000000?text=Tilapia' },
+                { id: 125, name: 'Catfish', price: 9.99, image: 'https://placehold.co/400x400/BDBDBD/000000?text=Catfish' },
+                { id: 126, name: 'Cod', price: 10.50, image: 'https://placehold.co/400x400/BDBDBD/000000?text=Cod' },
+                { id: 127, name: 'Haddock', price: 11.00, image: 'https://placehold.co/400x400/BDBDBD/000000?text=Haddock' },
+                { id: 128, name: 'Halibut', price: 14.50, image: 'https://placehold.co/400x400/BDBDBD/000000?text=Halibut' },
+                { id: 129, name: 'Swordfish', price: 16.99, image: 'https://placehold.co/400x400/795548/FFFFFF?text=Swordfish' },
+                { id: 130, name: 'Tuna (steak)', price: 15.00, image: 'https://placehold.co/400x400/795548/FFFFFF?text=Tuna+steak' },
+                { id: 131, name: 'Tuna (canned)', price: 2.50, image: 'https://placehold.co/400x400/BDBDBD/000000?text=Canned+Tuna' },
+                { id: 132, name: 'Sardines', price: 2.00, image: 'https://placehold.co/400x400/BDBDBD/000000?text=Sardines' },
+                { id: 133, name: 'Anchovies', price: 1.99, image: 'https://placehold.co/400x400/BDBDBD/000000?text=Anchovies' },
+                { id: 134, name: 'Mackerel', price: 3.50, image: 'https://placehold.co/400x400/795548/FFFFFF?text=Mackerel' },
+                { id: 135, name: 'Red snapper', price: 11.99, image: 'https://placehold.co/400x400/E57373/FFFFFF?text=Red+snapper' },
+                { id: 136, name: 'Sea bass', price: 14.00, image: 'https://placehold.co/400x400/9E9E9E/FFFFFF?text=Sea+bass' },
+                { id: 137, name: 'Mussels', price: 6.99, image: 'https://placehold.co/400x400/BDBDBD/000000?text=Mussels' },
+                { id: 138, name: 'Clams', price: 7.50, image: 'https://placehold.co/400x400/BDBDBD/000000?text=Clams' },
+                { id: 139, name: 'Oysters', price: 11.99, image: 'https://placehold.co/400x400/BDBDBD/000000?text=Oysters' },
+                { id: 140, name: 'Scallops', price: 15.99, image: 'https://placehold.co/400x400/FFD8B3/000000?text=Scallops' },
+                { id: 141, name: 'Lobster tails', price: 22.99, image: 'https://placehold.co/400x400/EF5350/FFFFFF?text=Lobster+tails' },
+                { id: 142, name: 'Whole lobster', price: 30.00, image: 'https://placehold.co/400x400/EF5350/FFFFFF?text=Whole+lobster' },
+                { id: 143, name: 'Crab legs', price: 25.00, image: 'https://placehold.co/400x400/EF5350/FFFFFF?text=Crab+legs' },
+                { id: 144, name: 'Whole crab', price: 20.00, image: 'https://placehold.co/400x400/EF5350/FFFFFF?text=Whole+crab' },
+                { id: 145, name: 'Shrimp (large)', price: 12.00, image: 'https://placehold.co/400x400/FF8A65/FFFFFF?text=Large+Shrimp' },
+                { id: 146, name: 'Shrimp (small)', price: 9.99, image: 'https://placehold.co/400x400/FF8A65/FFFFFF?text=Small+Shrimp' },
+                { id: 147, name: 'Crawfish', price: 18.50, image: 'https://placehold.co/400x400/D32F2F/FFFFFF?text=Crawfish' },
+                { id: 148, name: 'Squid', price: 8.99, image: 'https://placehold.co/400x400/BDBDBD/000000?text=Squid' },
+                { id: 149, name: 'Octopus', price: 17.50, image: 'https://placehold.co/400x400/9E9E9E/FFFFFF?text=Octopus' },
+                { id: 150, name: 'Eel', price: 19.99, image: 'https://placehold.co/400x400/795548/FFFFFF?text=Eel' },
+                { id: 151, name: 'Whole milk', price: 3.29, image: 'https://placehold.co/400x400/BBDEFB/000000?text=Whole+milk' },
+                { id: 152, name: 'Skim milk', price: 3.09, image: 'https://placehold.co/400x400/BBDEFB/000000?text=Skim+milk' },
+                { id: 153, name: '2% milk', price: 3.19, image: 'https://placehold.co/400x400/BBDEFB/000000?text=2%25+milk' },
+                { id: 154, name: 'Almond milk', price: 4.50, image: 'https://placehold.co/400x400/CFD8DC/000000?text=Almond+milk' },
+                { id: 155, name: 'Soy milk', price: 4.20, image: 'https://placehold.co/400x400/CFD8DC/000000?text=Soy+milk' },
+                { id: 156, name: 'Oat milk', price: 4.75, image: 'https://placehold.co/400x400/CFD8DC/000000?text=Oat+milk' },
+                { id: 157, name: 'Coconut milk', price: 3.99, image: 'https://placehold.co/400x400/F4F4F4/000000?text=Coconut+milk' },
+                { id: 158, name: 'Goat milk', price: 5.50, image: 'https://placehold.co/400x400/BDBDBD/000000?text=Goat+milk' },
+                { id: 159, name: 'Cream', price: 2.80, image: 'https://placehold.co/400x400/F4F4F4/000000?text=Cream' },
+                { id: 160, name: 'Half & half', price: 3.00, image: 'https://placehold.co/400x400/F4F4F4/000000?text=Half+%26+half' },
+                { id: 161, name: 'Heavy whipping cream', price: 3.50, image: 'https://placehold.co/400x400/F4F4F4/000000?text=Heavy+whipping+cream' },
+                { id: 162, name: 'Butter (salted)', price: 4.50, image: 'https://placehold.co/400x400/FFEB3B/000000?text=Salted+Butter' },
+                { id: 163, name: 'Butter (unsalted)', price: 4.40, image: 'https://placehold.co/400x400/FFEB3B/000000?text=Unsalted+Butter' },
+                { id: 164, name: 'Margarine', price: 2.99, image: 'https://placehold.co/400x400/D2B48C/000000?text=Margarine' },
+                { id: 165, name: 'Yogurt (plain)', price: 1.50, image: 'https://placehold.co/400x400/F4F4F4/000000?text=Plain+Yogurt' },
+                { id: 166, name: 'Yogurt (flavored)', price: 1.80, image: 'https://placehold.co/400x400/FFCDD2/000000?text=Flavored+Yogurt' },
+                { id: 167, name: 'Greek yogurt', price: 2.20, image: 'https://placehold.co/400x400/E0E0E0/000000?text=Greek+Yogurt' },
+                { id: 168, name: 'Sour cream', price: 2.10, image: 'https://placehold.co/400x400/F4F4F4/000000?text=Sour+cream' },
+                { id: 169, name: 'Cream cheese', price: 3.25, image: 'https://placehold.co/400x400/F4F4F4/000000?text=Cream+cheese' },
+                { id: 170, name: 'Cottage cheese', price: 2.99, image: 'https://placehold.co/400x400/E0E0E0/000000?text=Cottage+cheese' },
+                { id: 171, name: 'Ricotta cheese', price: 3.50, image: 'https://placehold.co/400x400/F4F4F4/000000?text=Ricotta+cheese' },
+                { id: 172, name: 'Mozzarella cheese', price: 4.80, image: 'https://placehold.co/400x400/F4F4F4/000000?text=Mozzarella' },
+                { id: 173, name: 'Parmesan cheese', price: 5.99, image: 'https://placehold.co/400x400/FFD54F/000000?text=Parmesan+cheese' },
+                { id: 174, name: 'Cheddar cheese', price: 5.20, image: 'https://placehold.co/400x400/FFB74D/000000?text=Cheddar+cheese' },
+                { id: 175, name: 'Colby Jack cheese', price: 5.10, image: 'https://placehold.co/400x400/FFD54F/000000?text=Colby+Jack' },
+                { id: 176, name: 'Monterey Jack cheese', price: 5.00, image: 'https://placehold.co/400x400/FFD54F/000000?text=Monterey+Jack' },
+                { id: 177, name: 'Swiss cheese', price: 5.50, image: 'https://placehold.co/400x400/FFD54F/000000?text=Swiss+cheese' },
+                { id: 178, name: 'Provolone cheese', price: 4.90, image: 'https://placehold.co/400x400/FFD54F/000000?text=Provolone+cheese' },
+                { id: 179, name: 'Gouda cheese', price: 6.20, image: 'https://placehold.co/400x400/FFD54F/000000?text=Gouda+cheese' },
+                { id: 180, name: 'Brie cheese', price: 7.50, image: 'https://placehold.co/400x400/F4F4F4/000000?text=Brie+cheese' },
+                { id: 181, name: 'Feta cheese', price: 4.99, image: 'https://placehold.co/400x400/F4F4F4/000000?text=Feta+cheese' },
+                { id: 182, name: 'Blue cheese', price: 6.50, image: 'https://placehold.co/400x400/B0BEC5/000000?text=Blue+cheese' },
+                { id: 183, name: 'Camembert cheese', price: 7.20, image: 'https://placehold.co/400x400/F4F4F4/000000?text=Camembert+cheese' },
+                { id: 184, name: 'Havarti cheese', price: 5.80, image: 'https://placehold.co/400x400/F4F4F4/000000?text=Havarti+cheese' },
+                { id: 185, name: 'Eggs (chicken)', price: 4.50, image: 'https://placehold.co/400x400/FFECB3/000000?text=Chicken+Eggs' },
+                { id: 186, name: 'Duck eggs', price: 6.50, image: 'https://placehold.co/400x400/D2B48C/000000?text=Duck+eggs' },
+                { id: 187, name: 'Quail eggs', price: 5.99, image: 'https://placehold.co/400x400/BDBDBD/000000?text=Quail+eggs' },
+                { id: 188, name: 'Egg whites (carton)', price: 4.00, image: 'https://placehold.co/400x400/F4F4F4/000000?text=Egg+whites' },
+                { id: 189, name: 'Powdered milk', price: 7.50, image: 'https://placehold.co/400x400/D2B48C/000000?text=Powdered+milk' },
+                { id: 190, name: 'Evaporated milk', price: 1.99, image: 'https://placehold.co/400x400/D2B48C/000000?text=Evaporated+milk' },
+                { id: 191, name: 'White bread', price: 2.50, image: 'https://placehold.co/400x400/F5F5DC/000000?text=White+bread' },
+                { id: 192, name: 'Whole wheat bread', price: 3.20, image: 'https://placehold.co/400x400/D2B48C/000000?text=Whole+wheat+bread' },
+                { id: 193, name: 'Multigrain bread', price: 3.50, image: 'https://placehold.co/400x400/A1887F/FFFFFF?text=Multigrain+bread' },
+                { id: 194, name: 'Sourdough bread', price: 4.00, image: 'https://placehold.co/400x400/BDBDBD/000000?text=Sourdough+bread' },
+                { id: 195, name: 'Rye bread', price: 3.75, image: 'https://placehold.co/400x400/795548/FFFFFF?text=Rye+bread' },
+                { id: 196, name: 'Pita bread', price: 2.00, image: 'https://placehold.co/400x400/E0E0E0/000000?text=Pita+bread' },
+                { id: 197, name: 'Naan bread', price: 2.50, image: 'https://placehold.co/400x400/E0E0E0/000000?text=Naan+bread' },
+                { id: 198, name: 'Tortillas (flour)', price: 2.80, image: 'https://placehold.co/400x400/FFECB3/000000?text=Flour+Tortillas' },
+                { id: 199, name: 'Tortillas (corn)', price: 2.60, image: 'https://placehold.co/400x400/FFEB3B/000000?text=Corn+Tortillas' },
+                { id: 200, name: 'Bagels', price: 4.20, image: 'https://placehold.co/400x400/D2B48C/000000?text=Bagels' },
+                { id: 201, name: 'English muffins', price: 3.00, image: 'https://placehold.co/400x400/FFECB3/000000?text=English+muffins' },
+                { id: 202, name: 'Croissants', price: 5.50, image: 'https://placehold.co/400x400/FFD54F/000000?text=Croissants' },
+                { id: 203, name: 'Baguette', price: 2.99, image: 'https://placehold.co/400x400/D2B48C/000000?text=Baguette' },
+                { id: 204, name: 'Dinner rolls', price: 3.80, image: 'https://placehold.co/400x400/FFECB3/000000?text=Dinner+rolls' },
+                { id: 205, name: 'Hot dog buns', price: 2.75, image: 'https://placehold.co/400x400/FFECB3/000000?text=Hot+dog+buns' },
+                { id: 206, name: 'Hamburger buns', price: 2.85, image: 'https://placehold.co/400x400/FFECB3/000000?text=Hamburger+buns' },
+                { id: 207, name: 'Flatbread', price: 3.00, image: 'https://placehold.co/400x400/E0E0E0/000000?text=Flatbread' },
+                { id: 208, name: 'Rice (white)', price: 4.99, image: 'https://placehold.co/400x400/E0E0E0/000000?text=White+Rice' },
+                { id: 209, name: 'Rice (brown)', price: 5.50, image: 'https://placehold.co/400x400/795548/FFFFFF?text=Brown+Rice' },
+                { id: 210, name: 'Rice (jasmine)', price: 6.20, image: 'https://placehold.co/400x400/F5F5DC/000000?text=Jasmine+Rice' },
+                { id: 211, name: 'Rice (basmati)', price: 6.50, image: 'https://placehold.co/400x400/F5F5DC/000000?text=Basmati+Rice' },
+                { id: 212, name: 'Rice (wild)', price: 7.00, image: 'https://placehold.co/400x400/424242/FFFFFF?text=Wild+Rice' },
+                { id: 213, name: 'Rice noodles', price: 3.50, image: 'https://placehold.co/400x400/FFD8B3/000000?text=Rice+noodles' },
+                { id: 214, name: 'Spaghetti', price: 1.99, image: 'https://placehold.co/400x400/FFCDD2/000000?text=Spaghetti' },
+                { id: 215, name: 'Penne pasta', price: 1.99, image: 'https://placehold.co/400x400/FFCDD2/000000?text=Penne+pasta' },
+                { id: 216, name: 'Fettuccine', price: 2.20, image: 'https://placehold.co/400x400/FFCDD2/000000?text=Fettuccine' },
+                { id: 217, name: 'Linguine', price: 2.10, image: 'https://placehold.co/400x400/FFCDD2/000000?text=Linguine' },
+                { id: 218, name: 'Macaroni', price: 1.80, image: 'https://placehold.co/400x400/FFCDD2/000000?text=Macaroni' },
+                { id: 219, name: 'Lasagna sheets', price: 2.99, image: 'https://placehold.co/400x400/FFCDD2/000000?text=Lasagna+sheets' },
+                { id: 220, name: 'Egg noodles', price: 2.50, image: 'https://placehold.co/400x400/FFEB3B/000000?text=Egg+noodles' },
+                { id: 221, name: 'Ramen noodles', price: 0.75, image: 'https://placehold.co/400x400/FFD8B3/000000?text=Ramen+noodles' },
+                { id: 222, name: 'Udon noodles', price: 3.00, image: 'https://placehold.co/400x400/BDBDBD/000000?text=Udon+noodles' },
+                { id: 223, name: 'Couscous', price: 2.50, image: 'https://placehold.co/400x400/D2B48C/000000?text=Couscous' },
+                { id: 224, name: 'Quinoa', price: 5.99, image: 'https://placehold.co/400x400/A1887F/FFFFFF?text=Quinoa' },
+                { id: 225, name: 'Barley', price: 3.20, image: 'https://placehold.co/400x400/D2B48C/000000?text=Barley' },
+                { id: 226, name: 'Oats', price: 4.50, image: 'https://placehold.co/400x400/D2B48C/000000?text=Oats' },
+                { id: 227, name: 'Rolled oats', price: 4.75, image: 'https://placehold.co/400x400/D2B48C/000000?text=Rolled+oats' },
+                { id: 228, name: 'Steel-cut oats', price: 5.00, image: 'https://placehold.co/400x400/795548/FFFFFF?text=Steel-cut+oats' },
+                { id: 229, name: 'Cornmeal', price: 2.20, image: 'https://placehold.co/400x400/FFEB3B/000000?text=Cornmeal' },
+                { id: 230, name: 'Polenta', price: 2.75, image: 'https://placehold.co/400x400/FFEB3B/000000?text=Polenta' },
+                { id: 231, name: 'Flour (all-purpose)', price: 3.50, image: 'https://placehold.co/400x400/F5F5DC/000000?text=All-purpose+Flour' },
+                { id: 232, name: 'Bread flour', price: 4.00, image: 'https://placehold.co/400x400/F5F5DC/000000?text=Bread+flour' },
+                { id: 233, name: 'Cake flour', price: 4.20, image: 'https://placehold.co/400x400/F5F5DC/000000?text=Cake+flour' },
+                { id: 234, name: 'Cornstarch', price: 1.80, image: 'https://placehold.co/400x400/E0E0E0/000000?text=Cornstarch' },
+                { id: 235, name: 'Baking powder', price: 2.50, image: 'https://placehold.co/400x400/BDBDBD/000000?text=Baking+powder' },
+                { id: 236, name: 'Baking soda', price: 1.50, image: 'https://placehold.co/400x400/BDBDBD/000000?text=Baking+soda' },
+                { id: 237, name: 'Yeast', price: 3.00, image: 'https://placehold.co/400x400/D2B48C/000000?text=Yeast' },
+                { id: 238, name: 'Salt', price: 1.20, image: 'https://placehold.co/400x400/E0E0E0/000000?text=Salt' },
+                { id: 239, name: 'Black pepper', price: 2.80, image: 'https://placehold.co/400x400/424242/FFFFFF?text=Black+pepper' },
+                { id: 240, name: 'Cinnamon', price: 3.20, image: 'https://placehold.co/400x400/D2B48C/000000?text=Cinnamon' },
+                { id: 241, name: 'Nutmeg', price: 3.50, image: 'https://placehold.co/400x400/795548/FFFFFF?text=Nutmeg' },
+                { id: 242, name: 'Cloves', price: 4.00, image: 'https://placehold.co/400x400/5D4037/FFFFFF?text=Cloves' },
+                { id: 243, name: 'Paprika', price: 2.50, image: 'https://placehold.co/400x400/EF5350/FFFFFF?text=Paprika' },
+                { id: 244, name: 'Cayenne pepper', price: 2.60, image: 'https://placehold.co/400x400/E53935/FFFFFF?text=Cayenne+pepper' },
+                { id: 245, name: 'Chili powder', price: 2.40, image: 'https://placehold.co/400x400/D32F2F/FFFFFF?text=Chili+powder' },
+                { id: 246, name: 'Curry powder', price: 3.99, image: 'https://placehold.co/400x400/FFD54F/000000?text=Curry+powder' },
+                { id: 247, name: 'Turmeric', price: 3.75, image: 'https://placehold.co/400x400/FFEB3B/000000?text=Turmeric' },
+                { id: 248, name: 'Cumin', price: 3.10, image: 'https://placehold.co/400x400/BDBDBD/000000?text=Cumin' },
+                { id: 249, name: 'Coriander', price: 2.99, image: 'https://placehold.co/400x400/81C784/FFFFFF?text=Coriander' },
+                { id: 250, name: 'Cardamom', price: 5.50, image: 'https://placehold.co/400x400/66BB6A/FFFFFF?text=Cardamom' },
+                { id: 251, name: 'Bay leaves', price: 1.80, image: 'https://placehold.co/400x400/81C784/FFFFFF?text=Bay+leaves' },
+                { id: 252, name: 'Oregano', price: 2.00, image: 'https://placehold.co/400x400/81C784/FFFFFF?text=Oregano' },
+                { id: 253, name: 'Basil', price: 2.50, image: 'https://placehold.co/400x400/4CAF50/FFFFFF?text=Basil' },
+                { id: 254, name: 'Thyme', price: 2.20, image: 'https://placehold.co/400x400/689F38/FFFFFF?text=Thyme' },
+                { id: 255, name: 'Rosemary', price: 2.40, image: 'https://placehold.co/400x400/66BB6A/FFFFFF?text=Rosemary' },
+                { id: 256, name: 'Sage', price: 2.10, image: 'https://placehold.co/400x400/8BC34A/FFFFFF?text=Sage' },
+                { id: 257, name: 'Dill', price: 1.90, image: 'https://placehold.co/400x400/81C784/FFFFFF?text=Dill' },
+                { id: 258, name: 'Parsley', price: 1.70, image: 'https://placehold.co/400x400/66BB6A/FFFFFF?text=Parsley' },
+                { id: 259, name: 'Garlic powder', price: 2.00, image: 'https://placehold.co/400x400/E0E0E0/000000?text=Garlic+powder' },
+                { id: 260, name: 'Onion powder', price: 1.90, image: 'https://placehold.co/400x400/E0E0E0/000000?text=Onion+powder' },
+                { id: 261, name: 'Soy sauce', price: 3.50, image: 'https://placehold.co/400x400/424242/FFFFFF?text=Soy+sauce' },
+                { id: 262, name: 'Teriyaki sauce', price: 4.00, image: 'https://placehold.co/400x400/5D4037/FFFFFF?text=Teriyaki+sauce' },
+                { id: 263, name: 'Worcestershire sauce', price: 3.20, image: 'https://placehold.co/400x400/795548/FFFFFF?text=Worcestershire+sauce' },
+                { id: 264, name: 'Hot sauce', price: 2.80, image: 'https://placehold.co/400x400/B71C1C/FFFFFF?text=Hot+sauce' },
+                { id: 265, name: 'Ketchup', price: 2.50, image: 'https://placehold.co/400x400/E53935/FFFFFF?text=Ketchup' },
+                { id: 266, name: 'Mustard', price: 2.10, image: 'https://placehold.co/400x400/FFEB3B/000000?text=Mustard' },
+                { id: 267, name: 'Mayonnaise', price: 3.50, image: 'https://placehold.co/400x400/F5F5DC/000000?text=Mayonnaise' },
+                { id: 268, name: 'BBQ sauce', price: 3.99, image: 'https://placehold.co/400x400/A0522D/FFFFFF?text=BBQ+sauce' },
+                { id: 269, name: 'Honey', price: 5.50, image: 'https://placehold.co/400x400/FFD54F/000000?text=Honey' },
+                { id: 270, name: 'Maple syrup', price: 6.99, image: 'https://placehold.co/400x400/A1887F/FFFFFF?text=Maple+syrup' },
+                { id: 271, name: 'Peanut butter', price: 3.99, image: 'https://placehold.co/400x400/D2B48C/000000?text=Peanut+butter' },
+                { id: 272, name: 'Almond butter', price: 5.99, image: 'https://placehold.co/400x400/B0A597/000000?text=Almond+butter' },
+                { id: 273, name: 'Nutella', price: 4.50, image: 'https://placehold.co/400x400/5D4037/FFFFFF?text=Nutella' },
+                { id: 274, name: 'Jam (strawberry)', price: 3.00, image: 'https://placehold.co/400x400/E53935/FFFFFF?text=Strawberry+Jam' },
+                { id: 275, name: 'Jam (blueberry)', price: 3.20, image: 'https://placehold.co/400x400/3949AB/FFFFFF?text=Blueberry+Jam' },
+                { id: 276, name: 'Jelly (grape)', price: 2.80, image: 'https://placehold.co/400x400/6A1B9A/FFFFFF?text=Grape+Jelly' },
+                { id: 277, name: 'Olive oil', price: 8.99, image: 'https://placehold.co/400x400/9CCC65/000000?text=Olive+oil' },
+                { id: 278, name: 'Vegetable oil', price: 4.50, image: 'https://placehold.co/400x400/FFEB3B/000000?text=Vegetable+oil' },
+                { id: 279, name: 'Canola oil', price: 4.20, image: 'https://placehold.co/400x400/FFEB3B/000000?text=Canola+oil' },
+                { id: 280, name: 'Sesame oil', price: 5.50, image: 'https://placehold.co/400x400/D2B48C/000000?text=Sesame+oil' },
+                { id: 281, name: 'Potato chips', price: 3.50, image: 'https://placehold.co/400x400/FFEB3B/000000?text=Potato+chips' },
+                { id: 282, name: 'Tortilla chips', price: 3.20, image: 'https://placehold.co/400x400/D2B48C/000000?text=Tortilla+chips' },
+                { id: 283, name: 'Pretzels', price: 2.80, image: 'https://placehold.co/400x400/BDBDBD/000000?text=Pretzels' },
+                { id: 284, name: 'Popcorn', price: 1.99, image: 'https://placehold.co/400x400/F5F5DC/000000?text=Popcorn' },
+                { id: 285, name: 'Crackers', price: 2.50, image: 'https://placehold.co/400x400/E0E0E0/000000?text=Crackers' },
+                { id: 286, name: 'Rice cakes', price: 2.00, image: 'https://placehold.co/400x400/F5F5DC/000000?text=Rice+cakes' },
+                { id: 287, name: 'Trail mix', price: 5.50, image: 'https://placehold.co/400x400/A1887F/FFFFFF?text=Trail+mix' },
+                { id: 288, name: 'Granola bars', price: 4.00, image: 'https://placehold.co/400x400/A1887F/FFFFFF?text=Granola+bars' },
+                { id: 289, name: 'Protein bars', price: 6.50, image: 'https://placehold.co/400x400/795548/FFFFFF?text=Protein+bars' },
+                { id: 290, name: 'Chocolate bars', price: 1.50, image: 'https://placehold.co/400x400/5D4037/FFFFFF?text=Chocolate+bars' },
+                { id: 291, name: 'Dark chocolate', price: 2.00, image: 'https://placehold.co/400x400/3E2723/FFFFFF?text=Dark+chocolate' },
+                { id: 292, name: 'Milk chocolate', price: 1.75, image: 'https://placehold.co/400x400/795548/FFFFFF?text=Milk+chocolate' },
+                { id: 293, name: 'White chocolate', price: 2.20, image: 'https://placehold.co/400x400/F5F5DC/000000?text=White+chocolate' },
+                { id: 294, name: 'Cookies (chocolate chip)', price: 3.50, image: 'https://placehold.co/400x400/D2B48C/000000?text=Chocolate+chip+cookies' },
+                { id: 295, name: 'Cookies (oatmeal raisin)', price: 3.20, image: 'https://placehold.co/400x400/D2B48C/000000?text=Oatmeal+raisin+cookies' },
+                { id: 296, name: 'Shortbread cookies', price: 3.00, image: 'https://placehold.co/400x400/E0E0E0/000000?text=Shortbread+cookies' },
+                { id: 297, name: 'Graham crackers', price: 2.50, image: 'https://placehold.co/400x400/D2B48C/000000?text=Graham+crackers' },
+                { id: 298, name: 'Marshmallows', price: 1.99, image: 'https://placehold.co/400x400/FFFFFF/000000?text=Marshmallows' },
+                { id: 299, name: 'Gummy bears', price: 2.20, image: 'https://placehold.co/400x400/FFCDD2/000000?text=Gummy+bears' },
+                { id: 300, name: 'Sour candy', price: 2.10, image: 'https://placehold.co/400x400/81C784/FFFFFF?text=Sour+candy' },
+                { id: 301, name: 'Licorice', price: 1.80, image: 'https://placehold.co/400x400/E53935/FFFFFF?text=Licorice' },
+                { id: 302, name: 'Caramel candies', price: 2.50, image: 'https://placehold.co/400x400/D2B48C/000000?text=Caramel+candies' },
+                { id: 303, name: 'Toffee', price: 3.00, image: 'https://placehold.co/400x400/A1887F/FFFFFF?text=Toffee' },
+                { id: 304, name: 'Brownies', price: 4.50, image: 'https://placehold.co/400x400/424242/FFFFFF?text=Brownies' },
+                { id: 305, name: 'Cupcakes', price: 5.00, image: 'https://placehold.co/400x400/FFCDD2/000000?text=Cupcakes' },
+                { id: 306, name: 'Muffins', price: 4.00, image: 'https://placehold.co/400x400/D2B48C/000000?text=Muffins' },
+                { id: 307, name: 'Donuts', price: 4.80, image: 'https://placehold.co/400x400/FFD8B3/000000?text=Donuts' },
+                { id: 308, name: 'Ice cream (vanilla)', price: 4.99, image: 'https://placehold.co/400x400/F5F5DC/000000?text=Vanilla+Ice+Cream' },
+                { id: 309, name: 'Ice cream (chocolate)', price: 4.99, image: 'https://placehold.co/400x400/5D4037/FFFFFF?text=Chocolate+Ice+Cream' },
+                { id: 310, name: 'Ice cream (strawberry)', price: 4.99, image: 'https://placehold.co/400x400/EF9A9A/FFFFFF?text=Strawberry+Ice+Cream' },
+                { id: 311, name: 'Sorbet', price: 5.20, image: 'https://placehold.co/400x400/FFD54F/000000?text=Sorbet' },
+                { id: 312, name: 'Popsicles', price: 3.50, image: 'https://placehold.co/400x400/B0BEC5/000000?text=Popsicles' },
+                { id: 313, name: 'Pudding cups', price: 2.00, image: 'https://placehold.co/400x400/A1887F/FFFFFF?text=Pudding+cups' },
+                { id: 314, name: 'Jell-O cups', price: 2.10, image: 'https://placehold.co/400x400/FFCDD2/000000?text=Jell-O+cups' },
+                { id: 315, name: 'Cheesecake', price: 8.99, image: 'https://placehold.co/400x400/E0E0E0/000000?text=Cheesecake' },
+                { id: 316, name: 'Apple pie', price: 7.50, image: 'https://placehold.co/400x400/D2B48C/000000?text=Apple+pie' },
+                { id: 317, name: 'Pumpkin pie', price: 7.80, image: 'https://placehold.co/400x400/FF8A65/FFFFFF?text=Pumpkin+pie' },
+                { id: 318, name: 'Chocolate cake', price: 8.00, image: 'https://placehold.co/400x400/5D4037/FFFFFF?text=Chocolate+cake' },
+                { id: 319, name: 'Carrot cake', price: 8.50, image: 'https://placehold.co/400x400/FF8A65/FFFFFF?text=Carrot+cake' },
+                { id: 320, name: 'Cupcake mix', price: 3.20, image: 'https://placehold.co/400x400/FFCDD2/000000?text=Cupcake+mix' },
+                { id: 321, name: 'Water (bottled)', price: 1.00, image: 'https://placehold.co/400x400/BBDEFB/000000?text=Bottled+Water' },
+                { id: 322, name: 'Sparkling water', price: 1.50, image: 'https://placehold.co/400x400/90CAF9/000000?text=Sparkling+water' },
+                { id: 323, name: 'Flavored water', price: 1.75, image: 'https://placehold.co/400x400/BBDEFB/000000?text=Flavored+water' },
+                { id: 324, name: 'Coconut water', price: 2.50, image: 'https://placehold.co/400x400/BDBDBD/000000?text=Coconut+water' },
+                { id: 325, name: 'Orange juice', price: 3.99, image: 'https://placehold.co/400x400/FFB74D/000000?text=Orange+juice' },
+                { id: 326, name: 'Apple juice', price: 3.50, image: 'https://placehold.co/400x400/D2B48C/000000?text=Apple+juice' },
+                { id: 327, name: 'Grape juice', price: 3.80, image: 'https://placehold.co/400x400/6A1B9A/FFFFFF?text=Grape+juice' },
+                { id: 328, name: 'Pineapple juice', price: 3.70, image: 'https://placehold.co/400x400/FFEE58/000000?text=Pineapple+juice' },
+                { id: 329, name: 'Cranberry juice', price: 4.10, image: 'https://placehold.co/400x400/E53935/FFFFFF?text=Cranberry+juice' },
+                { id: 330, name: 'Lemonade', price: 3.00, image: 'https://placehold.co/400x400/FFF176/000000?text=Lemonade' },
+                { id: 331, name: 'Iced tea', price: 2.50, image: 'https://placehold.co/400x400/D2B48C/000000?text=Iced+tea' },
+                { id: 332, name: 'Green tea', price: 4.20, image: 'https://placehold.co/400x400/81C784/FFFFFF?text=Green+tea' },
+                { id: 333, name: 'Black tea', price: 4.50, image: 'https://placehold.co/400x400/424242/FFFFFF?text=Black+tea' },
+                { id: 334, name: 'Herbal tea', price: 4.00, image: 'https://placehold.co/400x400/9CCC65/FFFFFF?text=Herbal+tea' },
+                { id: 335, name: 'Coffee (ground)', price: 7.99, image: 'https://placehold.co/400x400/795548/FFFFFF?text=Ground+Coffee' },
+                { id: 336, name: 'Coffee (instant)', price: 6.50, image: 'https://placehold.co/400x400/A1887F/FFFFFF?text=Instant+Coffee' },
+                { id: 337, name: 'Espresso', price: 8.50, image: 'https://placehold.co/400x400/424242/FFFFFF?text=Espresso' },
+                { id: 338, name: 'Cold brew', price: 5.00, image: 'https://placehold.co/400x400/795548/FFFFFF?text=Cold+brew' },
+                { id: 339, name: 'Hot cocoa mix', price: 3.50, image: 'https://placehold.co/400x400/5D4037/FFFFFF?text=Hot+cocoa+mix' },
+                { id: 340, name: 'Chocolate milk', price: 3.20, image: 'https://placehold.co/400x400/A1887F/FFFFFF?text=Chocolate+milk' },
+                { id: 341, name: 'Sports drinks', price: 2.00, image: 'https://placehold.co/400x400/FFD8B3/000000?text=Sports+drinks' },
+                { id: 342, name: 'Energy drinks', price: 2.50, image: 'https://placehold.co/400x400/E53935/FFFFFF?text=Energy+drinks' },
+                { id: 343, name: 'Cola', price: 1.80, image: 'https://placehold.co/400x400/424242/FFFFFF?text=Cola' },
+                { id: 344, name: 'Diet cola', price: 1.80, image: 'https://placehold.co/400x400/90CAF9/000000?text=Diet+cola' },
+                { id: 345, name: 'Ginger ale', price: 1.90, image: 'https://placehold.co/400x400/FFCDD2/000000?text=Ginger+ale' },
+                { id: 346, name: 'Root beer', price: 1.90, image: 'https://placehold.co/400x400/A1887F/FFFFFF?text=Root+beer' },
+                { id: 347, name: 'Tonic water', price: 1.70, image: 'https://placehold.co/400x400/BBDEFB/000000?text=Tonic+water' },
+                { id: 348, name: 'Club soda', price: 1.60, image: 'https://placehold.co/400x400/BDBDBD/000000?text=Club+soda' },
+                { id: 349, name: 'Smoothie mix', price: 6.00, image: 'https://placehold.co/400x400/FFCDD2/000000?text=Smoothie+mix' },
+                { id: 350, name: 'Protein shakes', price: 7.50, image: 'https://placehold.co/400x400/CFD8DC/000000?text=Protein+shakes' },
+                { id: 351, name: 'Paper towels', price: 4.99, image: 'https://placehold.co/400x400/E0E0E0/000000?text=Paper+towels' },
+                { id: 352, name: 'Toilet paper', price: 8.50, image: 'https://placehold.co/400x400/FFFFFF/000000?text=Toilet+paper' },
+                { id: 353, name: 'Facial tissues', price: 2.20, image: 'https://placehold.co/400x400/E0E0E0/000000?text=Facial+tissues' },
+                { id: 354, name: 'Napkins', price: 1.99, image: 'https://placehold.co/400x400/F5F5DC/000000?text=Napkins' },
+                { id: 355, name: 'Trash bags', price: 5.50, image: 'https://placehold.co/400x400/424242/FFFFFF?text=Trash+bags' },
+                { id: 356, name: 'Dish soap', price: 3.00, image: 'https://placehold.co/400x400/BBDEFB/000000?text=Dish+soap' },
+                { id: 357, name: 'Dishwasher detergent', price: 6.80, image: 'https://placehold.co/400x400/E0E0E0/000000?text=Dishwasher+detergent' },
+                { id: 358, name: 'Sponges', price: 2.50, image: 'https://placehold.co/400x400/FFB74D/000000?text=Sponges' },
+                { id: 359, name: 'Scrub brushes', price: 4.00, image: 'https://placehold.co/400x400/A1887F/FFFFFF?text=Scrub+brushes' },
+                { id: 360, name: 'Laundry detergent', price: 9.99, image: 'https://placehold.co/400x400/90CAF9/000000?text=Laundry+detergent' },
+                { id: 361, name: 'Fabric softener', price: 4.50, image: 'https://placehold.co/400x400/D2B48C/000000?text=Fabric+softener' },
+                { id: 362, name: 'Dryer sheets', price: 3.20, image: 'https://placehold.co/400x400/F5F5DC/000000?text=Dryer+sheets' },
+                { id: 363, name: 'Bleach', price: 2.80, image: 'https://placehold.co/400x400/BDBDBD/000000?text=Bleach' },
+                { id: 364, name: 'Glass cleaner', price: 3.50, image: 'https://placehold.co/400x400/BBDEFB/000000?text=Glass+cleaner' },
+                { id: 365, name: 'Multi-surface cleaner', price: 4.00, image: 'https://placehold.co/400x400/9CCC65/000000?text=Multi-surface+cleaner' },
+                { id: 366, name: 'Bathroom cleaner', price: 3.80, image: 'https://placehold.co/400x400/66BB6A/FFFFFF?text=Bathroom+cleaner' },
+                { id: 367, name: 'Floor cleaner', price: 4.20, image: 'https://placehold.co/400x400/BDBDBD/000000?text=Floor+cleaner' },
+                { id: 368, name: 'Mop', price: 15.00, image: 'https://placehold.co/400x400/A1887F/FFFFFF?text=Mop' },
+                { id: 369, name: 'Broom', price: 12.00, image: 'https://placehold.co/400x400/A1887F/FFFFFF?text=Broom' },
+                { id: 370, name: 'Dustpan', price: 5.50, image: 'https://placehold.co/400x400/BDBDBD/000000?text=Dustpan' },
+                { id: 371, name: 'Vacuum bags', price: 7.99, image: 'https://placehold.co/400x400/424242/FFFFFF?text=Vacuum+bags' },
+                { id: 372, name: 'Air freshener', price: 3.00, image: 'https://placehold.co/400x400/D2B48C/000000?text=Air+freshener' },
+                { id: 373, name: 'Candles', price: 4.50, image: 'https://placehold.co/400x400/E57373/FFFFFF?text=Candles' },
+                { id: 374, name: 'Light bulbs', price: 5.00, image: 'https://placehold.co/400x400/FFEB3B/000000?text=Light+bulbs' },
+                { id: 375, name: 'Aluminum foil', price: 3.99, image: 'https://placehold.co/400x400/B0BEC5/000000?text=Aluminum+foil' },
+                { id: 376, name: 'Plastic wrap', price: 3.50, image: 'https://placehold.co/400x400/BDBDBD/000000?text=Plastic+wrap' },
+                { id: 377, name: 'Wax paper', price: 2.50, image: 'https://placehold.co/400x400/F5F5DC/000000?text=Wax+paper' },
+                { id: 378, name: 'Freezer bags', price: 4.20, image: 'https://placehold.co/400x400/90CAF9/000000?text=Freezer+bags' },
+                { id: 379, name: 'Sandwich bags', price: 3.80, image: 'https://placehold.co/400x400/BBDEFB/000000?text=Sandwich+bags' },
+                { id: 380, name: 'Reusable containers', price: 6.00, image: 'https://placehold.co/400x400/D2B48C/000000?text=Reusable+containers' },
+                { id: 381, name: 'Dog food', price: 15.00, image: 'https://placehold.co/400x400/D2B48C/000000?text=Dog+food' },
+                { id: 382, name: 'Cat food', price: 12.00, image: 'https://placehold.co/400x400/A1887F/FFFFFF?text=Cat+food' },
+                { id: 383, name: 'Dog treats', price: 5.50, image: 'https://placehold.co/400x400/FFCDD2/000000?text=Dog+treats' },
+                { id: 384, name: 'Cat treats', price: 4.50, image: 'https://placehold.co/400x400/BDBDBD/000000?text=Cat+treats' },
+                { id: 385, name: 'Cat litter', price: 9.99, image: 'https://placehold.co/400x400/CFD8DC/000000?text=Cat+litter' },
+                { id: 386, name: 'Pet shampoo', price: 6.80, image: 'https://placehold.co/400x400/BBDEFB/000000?text=Pet+shampoo' },
+                { id: 387, name: 'Dog leash', price: 10.00, image: 'https://placehold.co/400x400/9CCC65/000000?text=Dog+leash' },
+                { id: 388, name: 'Cat toys', price: 3.99, image: 'https://placehold.co/400x400/FFCDD2/000000?text=Cat+toys' },
+                { id: 389, name: 'Pet bowls', price: 7.50, image: 'https://placehold.co/400x400/B0BEC5/000000?text=Pet+bowls' },
+                { id: 390, name: 'Fish food', price: 5.00, image: 'https://placehold.co/400x400/A1887F/FFFFFF?text=Fish+food' },
+                { id: 391, name: 'Shampoo', price: 5.50, image: 'https://placehold.co/400x400/BBDEFB/000000?text=Shampoo' },
+                { id: 392, name: 'Conditioner', price: 5.50, image: 'https://placehold.co/400x400/90CAF9/000000?text=Conditioner' },
+                { id: 393, name: 'Body wash', price: 4.80, image: 'https://placehold.co/400x400/FFCDD2/000000?text=Body+wash' },
+                { id: 394, name: 'Bar soap', price: 2.00, image: 'https://placehold.co/400x400/F5F5DC/000000?text=Bar+soap' },
+                { id: 395, name: 'Hand soap', price: 3.00, image: 'https://placehold.co/400x400/CFD8DC/000000?text=Hand+soap' },
+                { id: 396, name: 'Toothpaste', price: 3.50, image: 'https://placehold.co/400x400/E0E0E0/000000?text=Toothpaste' },
+                { id: 397, name: 'Toothbrush', price: 2.50, image: 'https://placehold.co/400x400/BBDEFB/000000?text=Toothbrush' },
+                { id: 398, name: 'Mouthwash', price: 4.50, image: 'https://placehold.co/400x400/A7FFEB/000000?text=Mouthwash' },
+                { id: 399, name: 'Floss', price: 1.80, image: 'https://placehold.co/400x400/FFFFFF/000000?text=Floss' },
+                { id: 400, name: 'Deodorant', price: 3.99, image: 'https://placehold.co/400x400/B0BEC5/000000?text=Deodorant' },
+                { id: 401, name: 'Lotion', price: 5.00, image: 'https://placehold.co/400x400/F5F5DC/000000?text=Lotion' },
+                { id: 402, name: 'Sunscreen', price: 7.99, image: 'https://placehold.co/400x400/FFEB3B/000000?text=Sunscreen' },
+                { id: 403, name: 'Razor', price: 6.50, image: 'https://placehold.co/400x400/B0BEC5/000000?text=Razor' },
+                { id: 404, name: 'Shaving cream', price: 3.80, image: 'https://placehold.co/400x400/E0E0E0/000000?text=Shaving+cream' },
+                { id: 405, name: 'Face wash', price: 6.00, image: 'https://placehold.co/400x400/BBDEFB/000000?text=Face+wash' },
+                { id: 406, name: 'Cotton swabs', price: 2.00, image: 'https://placehold.co/400x400/FFFFFF/000000?text=Cotton+swabs' },
+                { id: 407, name: 'Cotton balls', price: 1.80, image: 'https://placehold.co/400x400/FFFFFF/000000?text=Cotton+balls' },
+                { id: 408, name: 'Band-aids', price: 3.00, image: 'https://placehold.co/400x400/FFCDD2/000000?text=Band-aids' },
+                { id: 409, name: 'First aid kit', price: 15.00, image: 'https://placehold.co/400x400/E53935/FFFFFF?text=First+aid+kit' },
+                { id: 410, name: 'Pain relievers', price: 8.50, image: 'https://placehold.co/400x400/BDBDBD/000000?text=Pain+relievers' },
+                { id: 411, name: 'Salsa', price: 3.50, image: 'https://placehold.co/400x400/E53935/FFFFFF?text=Salsa' },
+                { id: 412, name: 'Guacamole', price: 4.50, image: 'https://placehold.co/400x400/9CCC65/FFFFFF?text=Guacamole' },
+                { id: 413, name: 'Hummus', price: 3.80, image: 'https://placehold.co/400x400/FFEB3B/000000?text=Hummus' },
+                { id: 414, name: 'Ranch dressing', price: 3.20, image: 'https://placehold.co/400x400/F5F5DC/000000?text=Ranch+dressing' },
+                { id: 415, name: 'Italian dressing', price: 3.00, image: 'https://placehold.co/400x400/FFCDD2/000000?text=Italian+dressing' },
+                { id: 416, name: 'Caesar dressing', price: 3.10, image: 'https://placehold.co/400x400/F5F5DC/000000?text=Caesar+dressing' },
+                { id: 417, name: 'Balsamic vinegar', price: 4.50, image: 'https://placehold.co/400x400/424242/FFFFFF?text=Balsamic+vinegar' },
+                { id: 418, name: 'Apple cider vinegar', price: 3.99, image: 'https://placehold.co/400x400/D2B48C/000000?text=Apple+cider+vinegar' },
+                { id: 419, name: 'Red wine vinegar', price: 3.50, image: 'https://placehold.co/400x400/E53935/FFFFFF?text=Red+wine+vinegar' },
+                { id: 420, name: 'Rice vinegar', price: 3.00, image: 'https://placehold.co/400x400/F5F5DC/000000?text=Rice+vinegar' },
+                { id: 421, name: 'Hoisin sauce', price: 4.20, image: 'https://placehold.co/400x400/5D4037/FFFFFF?text=Hoisin+sauce' },
+                { id: 422, name: 'Fish sauce', price: 3.80, image: 'https://placehold.co/400x400/A1887F/FFFFFF?text=Fish+sauce' },
+                { id: 423, name: 'Oyster sauce', price: 3.99, image: 'https://placehold.co/400x400/795548/FFFFFF?text=Oyster+sauce' },
+                { id: 424, name: 'Chili paste', price: 4.00, image: 'https://placehold.co/400x400/B71C1C/FFFFFF?text=Chili+paste' },
+                { id: 425, name: 'Sriracha', price: 3.50, image: 'https://placehold.co/400x400/E53935/FFFFFF?text=Sriracha' },
+                { id: 426, name: 'Dijon mustard', price: 2.80, image: 'https://placehold.co/400x400/FFEB3B/000000?text=Dijon+mustard' },
+                { id: 427, name: 'Yellow mustard', price: 2.00, image: 'https://placehold.co/400x400/FFEB3B/000000?text=Yellow+mustard' },
+                { id: 428, name: 'Spicy brown mustard', price: 2.50, image: 'https://placehold.co/400x400/D2B48C/000000?text=Spicy+brown+mustard' },
+                { id: 429, name: 'Relish', price: 2.20, image: 'https://placehold.co/400x400/81C784/FFFFFF?text=Relish' },
+                { id: 430, name: 'Tartar sauce', price: 3.00, image: 'https://placehold.co/400x400/E0E0E0/000000?text=Tartar+sauce' },
+                { id: 431, name: 'Canned corn', price: 1.50, image: 'https://placehold.co/400x400/FFD54F/000000?text=Canned+corn' },
+                { id: 432, name: 'Canned peas', price: 1.60, image: 'https://placehold.co/400x400/81C784/FFFFFF?text=Canned+peas' },
+                { id: 433, name: 'Canned carrots', price: 1.40, image: 'https://placehold.co/400x400/FFB74D/000000?text=Canned+carrots' },
+                { id: 434, name: 'Canned mushrooms', price: 2.00, image: 'https://placehold.co/400x400/A1887F/FFFFFF?text=Canned+mushrooms' },
+                { id: 435, name: 'Canned tomatoes', price: 2.50, image: 'https://placehold.co/400x400/E53935/FFFFFF?text=Canned+tomatoes' },
+                { id: 436, name: 'Tomato paste', price: 1.20, image: 'https://placehold.co/400x400/B71C1C/FFFFFF?text=Tomato+paste' },
+                { id: 437, name: 'Tomato sauce', price: 1.50, image: 'https://placehold.co/400x400/E53935/FFFFFF?text=Tomato+sauce' },
+                { id: 438, name: 'Canned beans (black)', price: 1.00, image: 'https://placehold.co/400x400/424242/FFFFFF?text=Canned+black+beans' },
+                { id: 439, name: 'Canned beans (kidney)', price: 1.10, image: 'https://placehold.co/400x400/B71C1C/FFFFFF?text=Canned+kidney+beans' },
+                { id: 440, name: 'Canned beans (chickpeas)', price: 1.20, image: 'https://placehold.co/400x400/FFEB3B/000000?text=Canned+chickpeas' },
+                { id: 441, name: 'Canned beans (pinto)', price: 1.15, image: 'https://placehold.co/400x400/A1887F/FFFFFF?text=Canned+pinto+beans' },
+                { id: 442, name: 'Canned lentils', price: 1.30, image: 'https://placehold.co/400x400/795548/FFFFFF?text=Canned+lentils' },
+                { id: 443, name: 'Canned soup (chicken noodle)', price: 2.00, image: 'https://placehold.co/400x400/D2B48C/000000?text=Chicken+noodle+soup' },
+                { id: 444, name: 'Canned soup (tomato)', price: 1.80, image: 'https://placehold.co/400x400/E53935/FFFFFF?text=Tomato+soup' },
+                { id: 445, name: 'Canned soup (clam chowder)', price: 2.50, image: 'https://placehold.co/400x400/E0E0E0/000000?text=Clam+chowder' },
+                { id: 446, name: 'Canned tuna', price: 2.50, image: 'https://placehold.co/400x400/BDBDBD/000000?text=Canned+tuna' },
+                { id: 447, name: 'Canned salmon', price: 3.50, image: 'https://placehold.co/400x400/FFAB91/FFFFFF?text=Canned+salmon' },
+                { id: 448, name: 'Canned chicken', price: 2.99, image: 'https://placehold.co/400x400/BDBDBD/000000?text=Canned+chicken' },
+                { id: 449, name: 'Canned sardines', price: 2.00, image: 'https://placehold.co/400x400/795548/FFFFFF?text=Canned+sardines' },
+                { id: 450, name: 'Canned pineapple', price: 2.20, image: 'https://placehold.co/400x400/FFB74D/000000?text=Canned+pineapple' },
+                { id: 451, name: 'Canned peaches', price: 2.10, image: 'https://placehold.co/400x400/FFCC80/000000?text=Canned+peaches' },
+                { id: 452, name: 'Canned pears', price: 2.15, image: 'https://placehold.co/400x400/D2B48C/000000?text=Canned+pears' },
+                { id: 453, name: 'Applesauce', price: 2.50, image: 'https://placehold.co/400x400/FFCDD2/000000?text=Applesauce' },
+                { id: 454, name: 'Fruit cocktail', price: 2.80, image: 'https://placehold.co/400x400/FFD8B3/000000?text=Fruit+cocktail' },
+                { id: 455, name: 'Evaporated milk', price: 1.99, image: 'https://placehold.co/400x400/D2B48C/000000?text=Evaporated+milk' },
+                { id: 456, name: 'Sweetened condensed milk', price: 2.50, image: 'https://placehold.co/400x400/FFEB3B/000000?text=Sweetened+condensed+milk' },
+                { id: 457, name: 'Instant noodles', price: 1.00, image: 'https://placehold.co/400x400/FFD8B3/000000?text=Instant+noodles' },
+                { id: 458, name: 'Boxed macaroni & cheese', price: 1.50, image: 'https://placehold.co/400x400/FFD54F/000000?text=Boxed+macaroni' },
+                { id: 459, name: 'Instant mashed potatoes', price: 2.20, image: 'https://placehold.co/400x400/D2B48C/000000?text=Instant+mashed+potatoes' },
+                { id: 460, name: 'Ramen packs', price: 1.20, image: 'https://placehold.co/400x400/FFD8B3/000000?text=Ramen+packs' },
+                { id: 461, name: 'Curry paste', price: 4.50, image: 'https://placehold.co/400x400/FFD54F/000000?text=Curry+paste' },
+                { id: 462, name: 'Nori sheets', price: 3.99, image: 'https://placehold.co/400x400/5C6BC0/FFFFFF?text=Nori+sheets' },
+                { id: 463, name: 'Miso paste', price: 5.50, image: 'https://placehold.co/400x400/D2B48C/000000?text=Miso+paste' },
+                { id: 464, name: 'Kimchi', price: 6.00, image: 'https://placehold.co/400x400/E53935/FFFFFF?text=Kimchi' },
+                { id: 465, name: 'Gochujang', price: 5.80, image: 'https://placehold.co/400x400/B71C1C/FFFFFF?text=Gochujang' },
+                { id: 466, name: 'Rice paper', price: 2.50, image: 'https://placehold.co/400x400/F5F5DC/000000?text=Rice+paper' },
+                { id: 467, name: 'Tamarind paste', price: 4.00, image: 'https://placehold.co/400x400/795548/FFFFFF?text=Tamarind+paste' },
+                { id: 468, name: 'Coconut cream', price: 3.50, image: 'https://placehold.co/400x400/F4F4F4/000000?text=Coconut+cream' },
+                { id: 469, name: 'Plantains', price: 1.99, image: 'https://placehold.co/400x400/FFEB3B/000000?text=Plantains' },
+                { id: 470, name: 'Yuca root', price: 2.50, image: 'https://placehold.co/400x400/D2B48C/000000?text=Yuca+root' },
+                { id: 471, name: 'Sazón seasoning', price: 2.00, image: 'https://placehold.co/400x400/FFD54F/000000?text=Sazón+seasoning' },
+                { id: 472, name: 'Adobo seasoning', price: 2.10, image: 'https://placehold.co/400x400/A1887F/FFFFFF?text=Adobo+seasoning' },
+                { id: 473, name: 'Harissa paste', price: 4.80, image: 'https://placehold.co/400x400/B71C1C/FFFFFF?text=Harissa+paste' },
+                { id: 474, name: 'Couscous (pearl)', price: 3.00, image: 'https://placehold.co/400x400/F5F5DC/000000?text=Pearl+Couscous' },
+                { id: 475, name: 'Falafel mix', price: 3.50, image: 'https://placehold.co/400x400/D2B48C/000000?text=Falafel+mix' },
+                { id: 476, name: 'Tahini', price: 5.00, image: 'https://placehold.co/400x400/D2B48C/000000?text=Tahini' },
+                { id: 477, name: 'Pita chips', price: 2.80, image: 'https://placehold.co/400x400/E0E0E0/000000?text=Pita+chips' },
+                { id: 478, name: 'Jasmine tea', price: 4.50, image: 'https://placehold.co/400x400/BDBDBD/000000?text=Jasmine+tea' },
+                { id: 479, name: 'Matcha powder', price: 8.99, image: 'https://placehold.co/400x400/4CAF50/FFFFFF?text=Matcha+powder' },
+                { id: 480, name: 'Wasabi paste', price: 3.00, image: 'https://placehold.co/400x400/81C784/FFFFFF?text=Wasabi+paste' },
+                { id: 481, name: 'Birthday candles', price: 2.00, image: 'https://placehold.co/400x400/F48FB1/FFFFFF?text=Birthday+candles' },
+                { id: 482, name: 'Charcoal', price: 7.99, image: 'https://placehold.co/400x400/424242/FFFFFF?text=Charcoal' },
+                { id: 483, name: 'Lighter fluid', price: 3.50, image: 'https://placehold.co/400x400/BDBDBD/000000?text=Lighter+fluid' },
+                { id: 484, name: 'Grill tools', price: 12.00, image: 'https://placehold.co/400x400/A1887F/FFFFFF?text=Grill+tools' },
+                { id: 485, name: 'Picnic plates', price: 4.00, image: 'https://placehold.co/400x400/FFCDD2/000000?text=Picnic+plates' },
+                { id: 486, name: 'Plastic cups', price: 3.50, image: 'https://placehold.co/400x400/BBDEFB/000000?text=Plastic+cups' },
+                { id: 487, name: 'Plastic utensils', price: 2.80, image: 'https://placehold.co/400x400/BDBDBD/000000?text=Plastic+utensils' },
+                { id: 488, name: 'Reusable straws', price: 5.00, image: 'https://placehold.co/400x400/66BB6A/FFFFFF?text=Reusable+straws' },
+                { id: 489, name: 'Baking pans', price: 10.00, image: 'https://placehold.co/400x400/B0BEC5/000000?text=Baking+pans' },
+                { id: 490, name: 'Aluminum trays', price: 3.50, image: 'https://placehold.co/400x400/B0BEC5/000000?text=Aluminum+trays' },
+                { id: 491, name: 'Coffee filters', price: 2.99, image: 'https://placehold.co/400x400/D2B48C/000000?text=Coffee+filters' },
+                { id: 492, name: 'Tea bags', price: 4.50, image: 'https://placehold.co/400x400/795548/FFFFFF?text=Tea+bags' },
+                { id: 493, name: 'Ice cube trays', price: 2.00, image: 'https://placehold.co/400x400/BBDEFB/000000?text=Ice+cube+trays' },
+                { id: 494, name: 'Lunch bags', price: 5.50, image: 'https://placehold.co/400x400/A1887F/FFFFFF?text=Lunch+bags' },
+                { id: 495, name: 'Zip ties', price: 3.00, image: 'https://placehold.co/400x400/424242/FFFFFF?text=Zip+ties' },
+                { id: 496, name: 'Rubber gloves', price: 2.50, image: 'https://placehold.co/400x400/FFCDD2/000000?text=Rubber+gloves' },
+                { id: 497, name: 'Batteries', price: 6.00, image: 'https://placehold.co/400x400/FFEB3B/000000?text=Batteries' },
+                { id: 498, name: 'Flashlight', price: 8.00, image: 'https://placehold.co/400x400/424242/FFFFFF?text=Flashlight' },
+                { id: 499, name: 'Umbrella', price: 15.00, image: 'https://placehold.co/400x400/5C6BC0/FFFFFF?text=Umbrella' },
+                { id: 500, name: 'Reusable shopping bags', price: 1.50, image: 'https://placehold.co/400x400/66BB6A/FFFFFF?text=Reusable+shopping+bags' },
+            ];
+
+            let cart = [];
+
+            // --- Utility Functions ---
+
+            // Function to show the custom message box
+            function showMessageBox(title, message) {
+                messageTitle.textContent = title;
+                messageText.textContent = message;
+                messageBox.style.display = 'block';
+                overlay.style.display = 'block';
+            }
+
+            // Function to hide the custom message box
+            function hideMessageBox() {
+                messageBox.style.display = 'none';
+                overlay.style.display = 'none';
+            }
+
+            // Function to render products on the page
+            function renderProducts() {
+                productListDiv.innerHTML = '';
+                products.forEach(product => {
+                    const productCard = document.createElement('div');
+                    productCard.className = 'bg-white p-6 rounded-xl shadow-lg transition duration-300 hover:shadow-2xl';
+                    productCard.innerHTML = `
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-40 object-cover rounded-xl mb-4">
+                        <h3 class="text-xl font-semibold mb-2">${product.name}</h3>
+                        <p class="text-teal-600 font-bold mb-4">$${product.price.toFixed(2)}</p>
+                        <button data-id="${product.id}" class="w-full btn-primary add-to-cart-btn">Add to Cart</button>
+                    `;
+                    productListDiv.appendChild(productCard);
+                });
+            }
+
+            // Function to render cart items and update total
+            function renderCart() {
+                cartItemsDiv.innerHTML = '';
+                let total = 0;
+                if (cart.length === 0) {
+                    emptyCartMessage.style.display = 'block';
+                } else {
+                    emptyCartMessage.style.display = 'none';
+                    cart.forEach(item => {
+                        const cartItem = document.createElement('div');
+                        cartItem.className = 'flex items-center justify-between py-2 border-b border-gray-100';
+                        cartItem.innerHTML = `
+                            <div class="flex items-center space-x-4">
+                                <img src="${item.image}" alt="${item.name}" class="w-12 h-12 object-cover rounded-md">
+                                <div>
+                                    <p class="font-semibold">${item.name}</p>
+                                    <p class="text-sm text-gray-500">$${item.price.toFixed(2)} x ${item.quantity}</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button data-id="${item.id}" class="update-quantity text-teal-600 font-bold" data-action="decrease">-</button>
+                                <span class="text-lg">${item.quantity}</span>
+                                <button data-id="${item.id}" class="update-quantity text-teal-600 font-bold" data-action="increase">+</button>
+                                <button data-id="${item.id}" class="remove-from-cart text-red-500 ml-2">
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm6 0a1 1 0 012 0v6a1 1 0 11-2 0V8z" clip-rule="evenodd"></path></svg>
+                                </button>
+                            </div>
+                        `;
+                        cartItemsDiv.appendChild(cartItem);
+                        total += item.price * item.quantity;
+                    });
+                }
+                cartTotalSpan.textContent = `$${total.toFixed(2)}`;
+                cartCountSpan.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+                cartCountSpan.classList.toggle('hidden', cart.length === 0);
+            }
+
+            // --- Event Listeners and Logic ---
+            
+            // Mobile menu toggle
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Add product to cart logic
+            productListDiv.addEventListener('click', (event) => {
+                if (event.target.classList.contains('add-to-cart-btn')) {
+                    const productId = parseInt(event.target.dataset.id);
+                    const productToAdd = products.find(p => p.id === productId);
+
+                    const existingCartItem = cart.find(item => item.id === productId);
+                    if (existingCartItem) {
+                        existingCartItem.quantity++;
+                    } else {
+                        cart.push({ ...productToAdd, quantity: 1 });
+                    }
+                    renderCart();
+                    showMessageBox('Item Added', `${productToAdd.name} has been added to your cart.`);
+                }
+            });
+
+            // Update or remove item from cart logic
+            cartItemsDiv.addEventListener('click', (event) => {
+                const button = event.target.closest('button');
+                if (!button) return;
+
+                const productId = parseInt(button.dataset.id);
+
+                if (button.classList.contains('update-quantity')) {
+                    const action = button.dataset.action;
+                    const item = cart.find(i => i.id === productId);
+                    if (item) {
+                        if (action === 'increase') {
+                            item.quantity++;
+                        } else if (action === 'decrease' && item.quantity > 1) {
+                            item.quantity--;
+                        }
+                    }
+                } else if (button.classList.contains('remove-from-cart')) {
+                    cart = cart.filter(item => item.id !== productId);
+                }
+                renderCart();
+            });
+
+            // Show/hide cart sidebar
+            cartButton.addEventListener('click', () => {
+                cartSidebar.classList.add('open');
+            });
+            closeCartButton.addEventListener('click', () => {
+                cartSidebar.classList.remove('open');
+            });
+
+            // Checkout form submission handler
+            checkoutForm.addEventListener('submit', (event) => {
+                event.preventDefault();
+
+                if (cart.length === 0) {
+                    showMessageBox('Cart Empty', 'Please add items to your cart before placing an order.');
+                    return;
+                }
+
+                // In a real application, you would send this data to a server
+                // along with the cart contents.
+                console.log('Order submitted:', {
+                    name: document.getElementById('customer-name').value,
+                    email: document.getElementById('customer-email').value,
+                    car: document.getElementById('customer-car').value,
+                    order: cart,
+                    total: cart.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2)
+                });
+
+                // Show a success message
+                showMessageBox('Order Placed!', `Thank you for your order! We'll get it ready for you.`);
+
+                // Clear the cart and reset form after submission
+                cart = [];
+                renderCart();
+                checkoutForm.reset();
+            });
+
+            // Close the message box
+            closeMessageBoxButton.addEventListener('click', hideMessageBox);
+            overlay.addEventListener('click', hideMessageBox);
+
+            // Initial rendering
+            renderProducts();
+            renderCart();
+        });
+    </script>
+</body>
+</html>
